@@ -2,6 +2,9 @@
 Jiang Li, Vida Abedi, Durgesh Chaudhary, Regeneron Genetics Center, Oded Goren, David J. Carey, Karen E. Wain, Ramin Zand
 ##### This manuscript is submitted to medrxiv. (doi: https://doi.org/10.1101/2022.08.11.22278284)
 
+#### GOAL:
+The goal is to explore the clinical manifestations observed in variant carriers and assess the risk for the lifetime or early onset of CSVD and other diseases within or beyond the circulatory system. 
+
 #### Abstract: 
 * Background: This study is aimed to explore the risk for a lifetime or early onset of cardiovascular diseases and diseases within or beyond the circulatory system observed in rare variant(RV) carriers of seven well-characterized monogenic cerebral small vessel disease (CSVD) risk genes (COL4A1, COL4A2, NOTCH3, HTRA1, TREX1, CTC1, and GLA) using a genotype-first approach within a hospital system population-based biobank cohort.
 * Method: This was a retrospective longitudinal study. MyCode participants with sequenced exomes were temporally split into discovery (n=92,445) and replication (n=81,130) cohorts. A workflow was created to prioritize potentially pathogenic variants by integrating three variant annotation pipelines. After propensity score matching, the number of participants in both discovery and replication cohorts was 2738/5490 and 1695/3410 for carriers/noncarriers, respectively.  
