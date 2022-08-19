@@ -1,11 +1,20 @@
+###outline:
+#1. loading the summary statistics of percent relative effect (RR-1) with phecode annotation from the previous analysis and creating the ranklist
+#2. getting the cut_point, enrichment score max;
+#3. creating candidate PheCode sets (also called Pathwaylist) for testing and swapping between discovery and replication cohorts;
+#4. PheCode set enrichment analysis using fgsea package with either fgseaRes or fgseaMultilevelRes function;
+#5. plotting the result from fgseaMultilevelRes;
+#6. creating heatmap/bubble plot for PSEA after swapping PheCode sets derived from the discovery or replication cohort
 
+
+################################################################################
 #installation of fgsea
 library(devtools)
 install_github("ctlab/fgsea")
 
 library(fgsea)
 ###############################################################################
-#load the summary statistics of percent relative effect (RR-1) with phecode annotation from the previous analysis 
+##load the summary statistics of percent relative effect (RR-1) with phecode annotation from the previous analysis and creating the ranklist
 Summary_phenotypes_merge_anno_common <- NULL
 load("Summary_phenotypes109_merge_anno_commonrare_delta_p123_90K_phenotypes109_age.RData")
 load("Summary_phenotypes109_merge_anno_commonrare_delta_p123_85K_phenotypes109_age.RData")
@@ -63,12 +72,12 @@ exampleRanks_sevengenes <- Summary_phenotypes_merge_anno_common %>%
 exampleRanks_sevengenes$phecode <- as.character(exampleRanks_sevengenes$phecode)
 ranklist <- with(exampleRanks_sevengenes,setNames(delta_change,phecode))
 ranklist
-df_ranklist <- data.frame(ranklist)
-df_ranklist$phecode <- rownames(df_ranklist)
-df_ranklist <- df_ranklist[order(-ranklist),]
-df_ranklist$index <- c(1:nrow(df_ranklist)) 
+# df_ranklist <- data.frame(ranklist)
+# df_ranklist$phecode <- rownames(df_ranklist)
+# df_ranklist <- df_ranklist[order(-ranklist),]
+# df_ranklist$index <- c(1:nrow(df_ranklist)) 
 
-#get the cut_point, enrichment score max 
+##get the cut_point, enrichment score max 
 #create a table for extracted parameters
 Pathwaylist <- NULL
 listOfDataFrames <- NULL
@@ -123,7 +132,7 @@ for (i in unique(Summary_phenotypes_merge_anno_common$exclude_name)) {
 }
 
 ####################################################################################################
-#Create candidate phecode sets for testing
+##Create candidate phecode sets (also called Pathwaylist) for testing
 Pathwaylist <- NULL
 for (j in c('circulatory system', 'congenital anomalies', 'genitourinary', 'pregnancy complications', 'sense organs', 'symptoms', 'musculoskeletal', 'neoplasms', 'neurological', 'infectious diseases', 'injuries & poisonings', 'mental disorders', 'respiratory', 'dermatologic', 'endocrine/metabolic', 'hematopoietic', 'digestive')){
   cat(j)
@@ -132,7 +141,8 @@ for (j in c('circulatory system', 'congenital anomalies', 'genitourinary', 'preg
 }
 Pathwaylist
 
-
+####################################################################################################
+##PheCode set enrichment analysis
 #using fgseaRes for enrichment analysis
 fgseaRes <- fgsea(pathways = Pathwaylist, 
                   stats = ranklist,
@@ -174,7 +184,7 @@ fwrite(fgseaMultilevelRes, file="df_fgseaMultilevelRes_85K_WHITE.txt", sep="\t",
 fwrite(fgseaMultilevelRes, file="df_fgseaMultilevelRes_90K_WHITE.txt", sep="\t", sep2=c("", " ", ""))
 
 #######################################################################################################
-#create heatmap/bubble plot for PSEA
+##creating heatmap/bubble plot for PSEA after swapping PheCode sets derived from the discovery or replication cohort
 
 summary_statistics <- read.csv("06122022_PSEA_table.csv", header = T, stringsAsFactors = F)
 head(summary_statistics)

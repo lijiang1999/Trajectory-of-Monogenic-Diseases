@@ -1,6 +1,13 @@
+###outline:
+#1. processing EHR longitudinal data pullout from case:control(here referred to as carriers:noncarriers) at 1:5 ratio without matching
+#2. creating file for all cases or controls mapped to ICD10 or ICD9 and timediff_occur_censor for a specific ICD under a specific encounter
+#3. using LAST_ACTIVE_DT make more sense for index date and creating the final demographic data;
+#4. making files for PheCode mapping (including making files for equal or less than 65yrs. This is optional for creating early onset files for HheCode mapping);
+#5. PheCode mapping using PheWAS package;
+#6. post mapping file processing
 
 ####################################################################################################################
-#processing EHR pullout from 10x case:control
+##processing EHR pullout from 5x case:control
 library(broom)
 library(car)
 
@@ -40,7 +47,7 @@ str(phecode_mapping_unique)
 phecode_mapping_ICD9 <- read.csv("phecode_icd9_map_unrolled.csv", header = T, stringsAsFactors = F)
 str(phecode_mapping_ICD9)
 
-#create file for all cases mapping with ICD10
+##creating file for all cases or controls mapped to ICD10 or ICD9
 SelectedPT <- data.frame()
 unique_file <- data.frame()
 RECUR <- NULL
@@ -54,7 +61,8 @@ Result_longitudinal_cases = function(unique_file, datapull_file, PT) {   #datapu
     slice(n()) %>%
     ungroup()
   unique_file$icd10cm <- unique_file$CS_CD
-  #head(unique_file, 5)
+  #head(unique_file, 5) #sanity check
+  
   #provide selected patient ID
   for (i in PT){
     print(i)
@@ -75,10 +83,10 @@ Result_longitudinal_cases = function(unique_file, datapull_file, PT) {   #datapu
       dplyr::select(PT_ID, ENC_DT, phecode, phecode_str, exclude_name, PT_BIRTH_DT, PT_DEATH_DT, PT_SEX, PT_RACE, LAST_ACTIVE_DT, timediff_occur_censor)
     
     RECUR[[i]] <- SelectedPT
-    #print(head(SelectedPT, 5))
+    #print(head(SelectedPT, 5)) #sanity check
   }
   dat_RECUR <- data.frame(do.call(rbind,RECUR))
-  #print(dat_RECUR)
+  #print(dat_RECUR) #sanity check
   dat_RECUR$group <- "case"
   save(dat_RECUR, file="cases_trajectory_all_ratio2_ICD10.RData", version = 2)
   return(dat_RECUR)
@@ -108,11 +116,13 @@ dat_RECUR_control_ICD9 <- dat_RECUR
 
 dat_RECUR_ICD9 <- rbind(dat_RECUR_case_ICD9, dat_RECUR_control_ICD9)
 head(dat_RECUR_ICD9)
+dat_RECUR_ICD9 <- dat_RECUR_ICD9[, !colnames(dat_RECUR_ICD9) %in% c("phecode_str", "exclude_name")]
+
 
 dat_RECUR_ICD109 <- rbind(dat_RECUR_ICD10, dat_RECUR_ICD9)
 save(dat_RECUR_ICD109, file = "dat_RECUR_ICD109.RData", version = 2)
 
-#using LAST_ACTIVE_DT make more sense 
+##using LAST_ACTIVE_DT make more sense for index date
 library(lubridate)
 colnames(dat_RECUR_ICD109)
 # [1] "PT_ID"                 "ENC_DT"                "phecode"
@@ -138,7 +148,7 @@ dat_RECUR_ICD109_demographics <- dat_RECUR_ICD109 %>%
 dat_RECUR_ICD109_demographics <- data.frame(dat_RECUR_ICD109_demographics)
 
 ######################################################################################################
-#make files for PheWAS mapping
+##make files for PheCode mapping
 datapull_09162021_casescontrols <- rbind(datapull_09162021_cases, datapull_09162021_controls)
 datapull_09162021_casescontrols <- datapull_09162021_casescontrols %>%
   distinct(PT_ID, .keep_all = T) 
@@ -228,7 +238,6 @@ Summary_ICD10_case <- datapull_09162021_cases_ICD10_unique %>%
   ungroup() %>%
   arrange(desc(count))
 
-############################################################################
 #merged cases and controls
 datapull_09162021_casescontrols_ICD10 <- rbind(datapull_09162021_controls_ICD10, datapull_09162021_cases_ICD10)
 head(datapull_09162021_casescontrols_ICD10)
@@ -307,6 +316,14 @@ datapull_09162021_casescontrols_ICD109_count1 <- rbind(datapull_09162021_casesco
 phenotypes=createPhenotypes(datapull_09162021_casescontrols_ICD109_count1, 
                             aggregate.fun=sum, id.sex=id.sex.phenotype109)
 
+#also create early onset phecode mapping
+datapull_09162021_casescontrols_ICD109_count1_age <- rbind(datapull_09162021_casescontrols_ICD10_count1_age, datapull_09162021_casescontrols_ICD9_count1_age)
+
+phenotypes_age=createPhenotypes(datapull_09162021_casescontrols_ICD109_count1_age, 
+                                aggregate.fun=sum, id.sex=id.sex.phenotype109)
+
+
+##post-mapping file processing
 dim(phenotypes) 
 unique(phenotypes$id)
 
@@ -322,17 +339,14 @@ table(phenotypes$group)
 
 save(phenotypes, file = "phenotypes109_sexverified.RData", version = 2) #this is phenotypes file mapped by both ICD10 and ICD9
 
-#also create early onset phecode mapping
-datapull_09162021_casescontrols_ICD109_count1_age <- rbind(datapull_09162021_casescontrols_ICD10_count1_age, datapull_09162021_casescontrols_ICD9_count1_age)
-
-phenotypes_age=createPhenotypes(datapull_09162021_casescontrols_ICD109_count1_age, 
-                                aggregate.fun=sum, id.sex=id.sex.phenotype109)
-
 
 cols <- sapply(phenotypes_age, is.logical)
 phenotypes_age[,cols] <- lapply(phenotypes_age[,cols], as.numeric)
 phenotypes_age[is.na(phenotypes_age)] <- 0
 
+#group column representing with RVs(case) or without RVs(control) 
+cases_ID_final <- c(ALL_90K, ALL_85K)
+cases_ID_final <- as.integer(gsub("PT", "", cases_ID_final))
 phenotypes_age$group <- ifelse(phenotypes_age$id %in% cases_ID_final, "case", "control")
 table(phenotypes_age$group)
 
