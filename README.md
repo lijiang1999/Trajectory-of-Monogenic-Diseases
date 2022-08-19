@@ -9,9 +9,9 @@ Jiang Li, Vida Abedi, Durgesh Chaudhary, Regeneron Genetics Center, Oded Goren, 
 * Conclusion: Carriers for monogenic CSVD risk genes demonstrated the increased risk for the lifetime or early onset of cerebrovascular disease and diseases within or beyond the circulatory system, some of which in a race- and sex-dependent manner. Our findings support the concept of developing a gene panel of CSVD for population screening of patients with early-onset circulatory diseases.
 
 #### The following code files were included in this repository.
-* Mapping to PheCodes (08182022_mapping_to_phecodes);
-* Calculate percent relative effect (RR-1) (08182022_create_RR);
-* Propensity Score Matching to identify matched controls (08182022_PSM);
-* Fisher Exact test and Circoplot to visualize disease trajectory (08182022_create_ciroplot); 
-* Survival analyses (08182022_survival_analyses_github);
-* PheCode Set Enrichment Analysis (08182022_fgsea_github)
+* Mapping to PheCodes (08182022_mapping_to_phecodes.R);
+* Calculate percent relative effect (RR-1) (08182022_create_RR.R);
+* Propensity Score Matching to identify matched controls (08182022_PSM.R);
+* Fisher Exact test and Circoplot to visualize disease trajectory (08182022_create_ciroplot.R); 
+* Survival analyses (08182022_survival_analyses_github.R);
+* PheCode Set Enrichment Analysis (08182022_fgsea_github.R)
