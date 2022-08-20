@@ -1,6 +1,6 @@
 ###outline:
-#1. loading the summary statistics of percent relative effect (RR-1) with phecode annotation from the previous analysis and creating the ranklist
-#2. getting the cut_point, enrichment score max;
+#1. loading the summary statistics of percent relative effect (RR-1) with PheCode annotation from the previous analysis and creating the ranklist
+#2. getting the cut_point and enrichment score max;
 #3. creating candidate PheCode sets (also called Pathwaylist) for testing and swapping between discovery and replication cohorts;
 #4. PheCode set enrichment analysis using fgsea package with either fgseaRes or fgseaMultilevelRes function;
 #5. plotting the result from fgseaMultilevelRes;
@@ -188,6 +188,13 @@ fwrite(fgseaMultilevelRes, file="df_fgseaMultilevelRes_90K_WHITE.txt", sep="\t",
 
 summary_statistics <- read.csv("06122022_PSEA_table.csv", header = T, stringsAsFactors = F)
 head(summary_statistics)
+# Rank_List  PheCode_set_List  NES    pval    padj RACE
+# 1    Discovery (EUR)   Discovery (AFR) 0.77 8.4e-01 0.96000  AFR
+# 2    Discovery (AFR)   Discovery (EUR) 1.61 1.9e-02 0.12000  EUR
+# 3    Discovery (EUR) Replication (EUR) 0.76 8.7e-01 0.97000  EUR
+# 4    Discovery (AFR) Replication (AFR) 1.75 3.0e-03 0.05100  AFR
+# 5 Replication (EUR)  Replication (AFR) 1.89 9.8e-05 0.00160  AFR
+# 6 Replication (AFR)  Replication (EUR) 1.98 5.0e-05 0.00081  EUR
 unique(summary_statistics$PheCode_set_List)
 bb <- c(1, 2, 4, 6, 8) # define breaks.
 ll <- c("0.1", "0.01","0.0001","0.000001","0.00000001") # labels.
@@ -215,7 +222,7 @@ q <- summary_statistics %>%
         axis.title.x = element_text(color = "grey20", size = 14, angle = 0, hjust = .5, vjust = 0, face = "plain"),
         axis.title.y = element_text(color = "grey20", size = 14, angle = 90, hjust = .5, vjust = .5, face = "plain")
         )
-tiff("<path_to_directory>/fgsea_90K_WHITE/bubble_plot_06212022.tiff", units="in", width=10, height=10, res=600)
+tiff("<path_to_directory>/fgsea_90K_WHITE/bubble_plot.tiff", units="in", width=10, height=10, res=600)
 q
 dev.off()
 

@@ -40,7 +40,7 @@ str(phecode_mapping)
 #for v1.2b
 phecode_mapping_unique <- phecode_mapping %>%
   dplyr::select(phecode, phecode_str, exclude_range, exclude_name) %>%
-  distinct(phecode, .keep_all = T)  #1755*4
+  distinct(phecode, .keep_all = T)
 str(phecode_mapping_unique)
 
 #ICD9 code mapping

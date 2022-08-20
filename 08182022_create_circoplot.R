@@ -1,9 +1,9 @@
 ###outline:
 #1. conducting fisher exact test to determine the association between RVs and the top 50 ranked PheCodes;
 #2. creating circoplot using ggplot2;
-#3. creating correlation/association matrix file between top ranked PheCodes in either RV carrrier or noncarriers;
+#3. creating correlation/association matrix file between top ranked PheCodes in either RV carrier or noncarriers;
 #4. preparing files for creating circo plot using circlize;
-#5. creating circo plot with multiple layers if nencessary
+#5. creating circo plot with multiple layers if necessary
 
 
 ###########################################################################################################
@@ -31,7 +31,7 @@ for (phecode in Summary_phenotypes_merge_anno_common$phecode){  # the top 50 phe
   phenotypes_long_top_summary$bin <- ifelse(phenotypes_long_top_summary$sum >= 1, "disease", "nondisease")
   #table(phenotypes_long_top_summary$group, phenotypes_long_top_summary$bin)
   P <- fisher.test(phenotypes_long_top_summary$group, phenotypes_long_top_summary$bin)$p.value
-  S <- fisher.test(phenotypes_long_top_summary$group, phenotypes_long_top_summary$bin)$estimate #this is odds ratio
+  S <- fisher.test(phenotypes_long_top_summary$group, phenotypes_long_top_summary$bin)$estimate 
   x <- c(P, S)
   x <- t(data.frame(x))
   colnames(x) <- c("p.value", "estimate")

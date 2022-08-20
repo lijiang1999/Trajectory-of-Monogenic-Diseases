@@ -100,6 +100,7 @@ GNSIS <- rbind(dat_RECUR_ICD109_select, dat_RECUR_ICD109_WO)
 # GNSIS <- GNSIS %>% 
 #   mutate(timediff_recur_censor = (timediff_occur_censor - NN)*365.25)
 
+#NN is the age of patient start to follow up
 NN <- 0 #suggesting lifetime follow-up
 GNSIS <- GNSIS %>% 
   mutate(timediff_recur_censor = (timediff_occur_censor - NN)*365.25)
@@ -201,11 +202,11 @@ GNSIS_select <- GNSIS_select_Male
 GNSIS_select$subgroup[GNSIS_select$subgroup != "W/O Mut"] <- "W/ Mut"
 unique(GNSIS_select$subgroup)
 GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("COL4A1", "W/O Mut"), ]
-GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("NOTCH3", "W/O Mut"), ]
-GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("TREX1", "W/O Mut"), ]
-GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("GLA", "W/O Mut"), ]
-GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("CTC1", "W/O Mut"), ]
-GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("HTRA1", "W/O Mut"), ]
+# GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("NOTCH3", "W/O Mut"), ]
+# GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("TREX1", "W/O Mut"), ]
+# GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("GLA", "W/O Mut"), ]
+# GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("CTC1", "W/O Mut"), ]
+# GNSIS_select <- GNSIS_select[GNSIS_select$subgroup %in% c("HTRA1", "W/O Mut"), ]
 
 GNSIS_select <- GNSIS_select[GNSIS_select$COHORT == "Discovery", ]
 GNSIS_select <- GNSIS_select[GNSIS_select$COHORT == "Replication", ]
@@ -296,6 +297,7 @@ tiff(paste('<path_to_directory>/', 'ischemicstroke_6phecodes', '_system_7genes_s
 print(q)
 dev.off()
 
+#posthoc logRank test
 GNSIS_select$subgroup <- paste0(GNSIS_select$subgroup, GNSIS_select$PT_SEX)
 #GNSIS_select$subgroup <- paste0(GNSIS_select$subgroup, GNSIS_select$COHORT)
 #GNSIS_select$subgroup <- paste0(GNSIS_select$subgroup, GNSIS_select$COHORT, GNSIS_select$PT_SEX)

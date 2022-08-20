@@ -35,7 +35,6 @@ Genotype_long_mutation <- Genotype_long[!is.na(Genotype_long$dosage),] %>%
   filter(dosage != 2) %>% #only select RV carriers
   distinct(PT_ID, .keep_all = T) #some patients may have multiple mutations, here distinct to get the unique individual ID
 
-#the number in bracket is same variant strategy
 TREX1 <- as.character(unique(Genotype_long_mutation$PT_ID)) 
 # HTRA1 <- as.character(unique(Genotype_long_mutation$PT_ID)) 
 # COL4A1 <- as.character(unique(Genotype_long_mutation$PT_ID)) 
@@ -148,7 +147,7 @@ save(dat_RECUR_ICD109_demographics_90K, file = "dat_RECUR_ICD109_demographics_90
 
 #same way to create replication dataset(85K)
 
-#check the mean difference between carrier and noncarrier group
+#check the mean difference in index_age between carrier and noncarrier group
 dat_RECUR_ICD109_demographics_90K %>%
   dplyr::group_by(group) %>%
   dplyr::summarise(mean = mean(Index_age), SD = sd(Index_age)) %>% 
