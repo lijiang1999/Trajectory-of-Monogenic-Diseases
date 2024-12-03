@@ -1,6 +1,6 @@
 #### Race- and sex-specific disease trajectory in individuals with rare variants in seven cerebrovascular small vessel disease genes: a genotype-first population study 
 Jiang Li, Vida Abedi, Durgesh Chaudhary, Regeneron Genetics Center, Oded Goren, David J. Carey, Karen E. Wain, Ramin Zand
-##### This manuscript is submitted to medrxiv. (doi: https://doi.org/10.1101/2022.08.11.22278284)
+##### This manuscript is submitted to medrxiv. (doi: https://doi.org/10.1101/2022.08.11.22278284) and some of the results finally published in "Genetically proxied HTRA1 protease activity and circulating levels independently predict risk of ischemic stroke and coronary artery disease" by Rainer Malik, Nathalie Beaufort, Jiang Li, Koki Tanaka, Marios K. Georgakis, Yunye He, Masaru Koido, Chikashi Terao, BioBank Japan, Christopher D. Anderson, Yoichiro Kamatani, Ramin Zand & Martin Dichgans Nature Cardiovascular Research volume 3, pages701–713 (2024)
 
 #### GOAL:
 The goal is to explore the clinical manifestations observed in variant carriers and assess the risk for the lifetime or early onset of CSVD and other diseases within or beyond the circulatory system. 
